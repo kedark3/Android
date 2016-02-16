@@ -1,50 +1,143 @@
 package foodapp.kk.com.inclass5;
 
 import android.app.ProgressDialog;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.util.ArrayList;
+import java.util.HashMap;
+
+/*
+        * Name:Kedar Vijay Kulkarni
+        * Filename:MainActivity.java
+        * Assignment: In Class 05
+        */
 
 public class MainActivity extends AppCompatActivity {
-    TextView textView;
-    ImageView imageViewNext, imageViewPrev;
-    ArrayList<String> imageIds;
+    EditText editTextSearch;
+    //ImageView imageViewNext, imageViewPrev;
+    static ImageView imageViewResult;
+    static HashMap<String,ArrayList<String>> imageIds;
+    ArrayList<String> urlList=null;
+    static ProgressDialog pDialog,pDiaglog2;
+    int index=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        imageIds=new ArrayList<String>();
-        textView=(TextView)findViewById(R.id.textView);
-        imageViewNext=(ImageView) findViewById(R.id.imageViewNext);
-        imageViewPrev=(ImageView) findViewById(R.id.imageViewPrevious);
-        
-        final ProgressDialog pDialog = new ProgressDialog(this);
-        pDialog.setMessage("Loading next Image");
+
+        findViewById(R.id.imageViewNext).setClickable(false);
+        findViewById(R.id.imageViewPrevious).setClickable(false);
+        imageIds=new  HashMap<String,ArrayList<String>> ();
+        editTextSearch=(EditText)findViewById(R.id.editTextSearchString);
+        //imageViewNext=(ImageView) findViewById(R.id.imageViewNext);
+        //imageViewPrev=(ImageView) findViewById(R.id.imageViewPrevious);
+        pDialog=new ProgressDialog(MainActivity.this);
+        pDialog.setMessage("Loading Dictionary");
+        pDiaglog2=new ProgressDialog(MainActivity.this);
+        pDiaglog2.setMessage("Loading next image");
+        imageViewResult= (ImageView) findViewById(R.id.imageViewResult);
 
         if(checkConnection()){
             Toast.makeText(MainActivity.this,"Network Available!",Toast.LENGTH_LONG).show();
-            RequestParams params= new RequestParams("GET", "http://dev.theappsdr.com/lectures/inclass_photos/index.php");
+            RequestParams params= new RequestParams("GET", "http://dev.theappsdr.com/apis/spring_2016/inclass5/URLs.txt");
             new getImageIdData().execute(params);
         }
         else{
             Toast.makeText(MainActivity.this,"Network NOT Available!",Toast.LENGTH_LONG).show();
-            finish();
+
         }
+
+
+        findViewById(R.id.buttonGo).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(checkConnection()==false) {
+                    Toast.makeText(MainActivity.this,"Network NOT Available!",Toast.LENGTH_LONG).show();
+                    return;
+                }
+                index=0;
+                if (editTextSearch.getText().length() > 0) {
+                    //Log.d("Demo", imageIds.get(editTextSearch.getText().toString()).get(0).toString());
+                    if (imageIds.get(editTextSearch.getText().toString()) != null) {
+                        urlList = imageIds.get(editTextSearch.getText().toString());
+                        if(index==urlList.size())index=0;
+                        RequestParams params = new RequestParams("GET", urlList.get(index));
+
+                        new getImage().execute(params);
+                        if(urlList.size()>1){
+                            findViewById(R.id.imageViewNext).setClickable(true);
+                            findViewById(R.id.imageViewPrevious).setClickable(true);
+                        }
+
+                    } else {
+                        Toast.makeText(MainActivity.this, "No Images found", Toast.LENGTH_LONG).show();
+                        findViewById(R.id.imageViewNext).setClickable(false);
+                        findViewById(R.id.imageViewPrevious).setClickable(false);
+                    }
+
+                }
+            }
+        });
+
+        findViewById(R.id.imageViewNext).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(urlList==null)return;
+                if(checkConnection()==false) {
+                    Toast.makeText(MainActivity.this,"Network NOT Available!",Toast.LENGTH_LONG).show();
+                    return;
+                }
+                index++;
+                if(index<urlList.size()){
+                    urlList = imageIds.get(editTextSearch.getText().toString());
+                    RequestParams params = new RequestParams("GET", urlList.get(index));
+                    new getImage().execute(params);
+                }
+                else{
+                    index=0;
+                    urlList = imageIds.get(editTextSearch.getText().toString());
+                    RequestParams params = new RequestParams("GET", urlList.get(index));
+                    index++;
+                    new getImage().execute(params);
+                }
+            }
+        });
+
+        findViewById(R.id.imageViewPrevious).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(urlList==null)return;
+                if(checkConnection()==false) {
+                    Toast.makeText(MainActivity.this,"Network NOT Available!",Toast.LENGTH_LONG).show();
+                    return;
+                }
+                index--;
+                if(index>-1){
+
+                    urlList = imageIds.get(editTextSearch.getText().toString());
+                    RequestParams params = new RequestParams("GET", urlList.get(index));
+
+                    new getImage().execute(params);
+                }
+                else{
+                    index=urlList.size()-1;
+                    urlList = imageIds.get(editTextSearch.getText().toString());
+                    RequestParams params = new RequestParams("GET", urlList.get(index));
+                    index--;
+                    new getImage().execute(params);
+                }
+            }
+        });
     }
 
 
@@ -60,69 +153,5 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public class getImageIdData extends AsyncTask<RequestParams,Void,String>{
 
-
-        @Override
-        protected String doInBackground(RequestParams... params) {
-            BufferedReader reader=null;
-
-            try{
-                HttpURLConnection con= params[0].setupConnection();
-                reader= new BufferedReader(new InputStreamReader(con.getInputStream()));
-                StringBuilder sb=new StringBuilder();
-                String line="";
-                while ((line=reader.readLine()) != null){
-                    sb.append(line +"\n");
-                    imageIds.add(line);
-                }
-                return sb.toString();
-            }catch (IOException e){
-                e.printStackTrace();
-            }finally {
-                if(reader!=null){
-                    try {
-                        reader.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-
-            textView.setText(imageIds.get(0));
-            RequestParams params= new RequestParams("GET", "http://dev.theappsdr.com/lectures/inclass_photos/index.php");
-            params.addParams("pid",imageIds.get(0));
-            new getImage().execute(params);
-        }
-    }
-
-    public class getImage extends AsyncTask<RequestParams,Void,Bitmap>{
-
-
-        @Override
-        protected void onPostExecute(Bitmap bitmap) {
-            super.onPostExecute(bitmap);
-            ImageView imageView= (ImageView) findViewById(R.id.imageView);
-            imageView.setImageBitmap(bitmap);
-        }
-
-        @Override
-        protected Bitmap doInBackground(RequestParams... params) {
-            try {
-                HttpURLConnection con= params[0].setupConnection();
-                Bitmap image= BitmapFactory.decodeStream(con.getInputStream());
-
-                return image;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-    }
 }

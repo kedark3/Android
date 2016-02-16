@@ -9,10 +9,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashMap;
-
-/**
- * Created by Sairam on 2/15/2016.
- */
+/*
+        * Name:Kedar Vijay Kulkarni
+        * Filename:RequestParams.java
+        * Assignment: In Class 05
+        */
 public class RequestParams {
 
     String method, baseURL;
