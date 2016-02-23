@@ -5,8 +5,9 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,17 +16,18 @@ import java.net.HttpURLConnection;
 import java.util.ArrayList;
 
 public class Welcome extends AppCompatActivity {
-    ProgressDialog progressDialog;
+    private ProgressBar spinner;
     ArrayList<Question> questionsList;
-
+    TextView loadingQues;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Loading Questions");
+        spinner = (ProgressBar) findViewById(R.id.progressBarLoadingQues);
+        spinner.setVisibility(View.GONE);
+        loadingQues = (TextView) findViewById(R.id.textViewLoadingQues);
         questionsList = new ArrayList<Question>();
 
         for(int i=0;i<7;i++) {
@@ -56,8 +58,8 @@ public class Welcome extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            progressDialog.show();
-            progressDialog.setCancelable(false);
+            spinner.setVisibility(View.VISIBLE);
+            loadingQues.setVisibility(View.VISIBLE);
         }
 
 
@@ -75,10 +77,7 @@ public class Welcome extends AppCompatActivity {
                 while ((line = reader.readLine()) != null) {
                     sb.append(line + "\n");
                     questionDecomposed = line.split(";");
-
                     question = new Question(questionDecomposed);
-
-
                 }
                 return question;
             } catch (IOException e) {
@@ -104,7 +103,8 @@ public class Welcome extends AppCompatActivity {
                 //Log.d("Check", questionsList.get(questionsList.size()-1)+"");
                 if(questionsList.size()==7) {
                     findViewById(R.id.buttonStartQuiz).setEnabled(true);
-                    progressDialog.dismiss();
+                    spinner.setVisibility(View.GONE);
+                    loadingQues.setVisibility(View.GONE);
                 }
             }
         }
