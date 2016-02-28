@@ -1643,9 +1643,9 @@ containing a value of this type.
         public static final int ifRoom=0x7f0c001d;
         public static final int image=0x7f0c0026;
         public static final int imageView=0x7f0c0052;
-        public static final int imageView2=0x7f0c0056;
-        public static final int imageViewArrowLeft=0x7f0c005a;
-        public static final int imageViewArrowRight=0x7f0c005b;
+        public static final int imageViewArrowLeft=0x7f0c005b;
+        public static final int imageViewArrowRight=0x7f0c005c;
+        public static final int imageViewResult=0x7f0c0056;
         public static final int info=0x7f0c006c;
         public static final int line1=0x7f0c0066;
         public static final int line3=0x7f0c006a;
@@ -1661,7 +1661,7 @@ containing a value of this type.
         public static final int progress_circular=0x7f0c0005;
         public static final int progress_horizontal=0x7f0c0006;
         public static final int radio=0x7f0c003b;
-        public static final int ratingBar=0x7f0c005c;
+        public static final int ratingBar=0x7f0c0057;
         public static final int relativeLayout=0x7f0c0060;
         public static final int screen=0x7f0c0014;
         public static final int scrollIndicatorDown=0x7f0c0035;
@@ -1693,9 +1693,9 @@ containing a value of this type.
         public static final int text=0x7f0c006b;
         public static final int text2=0x7f0c0069;
         public static final int textSpacerNoButtons=0x7f0c0034;
-        public static final int textViewActors=0x7f0c0059;
-        public static final int textViewDirector=0x7f0c0058;
-        public static final int textViewGenre=0x7f0c0057;
+        public static final int textViewActors=0x7f0c005a;
+        public static final int textViewDirector=0x7f0c0059;
+        public static final int textViewGenre=0x7f0c0058;
         public static final int textViewPlot=0x7f0c005d;
         public static final int textViewReleaseDate=0x7f0c0055;
         public static final int textViewTitle=0x7f0c0054;

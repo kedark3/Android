@@ -7,21 +7,31 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 public class MovieDetailsActivity extends AppCompatActivity implements GetMovieDetailsAsyncTask.contextInterface {
     public static ProgressDialog progressDialog;
     ArrayList<Movie> Movies;
     int clickedItemIndex;
     TextView tvTitle,tvRelease,tvGenre,tvDirector, tvActors,tvPlot;
+    static ImageView imageViewResult;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_details);
 
+
+        imageViewResult= (ImageView) findViewById(R.id.imageViewResult);
         tvTitle=(TextView) findViewById(R.id.textViewTitle);
         tvRelease=(TextView) findViewById(R.id.textViewReleaseDate);
         tvGenre= (TextView) findViewById(R.id.textViewGenre);
@@ -43,7 +53,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements GetMovieD
         Log.d("Demo Movie",getIntent().getIntExtra("clickedID",0)+"");
         clickedItemIndex= getIntent().getIntExtra("clickedID",0);
         new GetMovieDetailsAsyncTask(this).execute("http://www.omdbapi.com/?i="+imdbID);
-        findViewById(R.id.buttonFinish).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.imageViewResult).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MovieDetailsActivity.this, MovieWebViewActivity.class);
@@ -78,6 +88,15 @@ public class MovieDetailsActivity extends AppCompatActivity implements GetMovieD
                         execute("http://www.omdbapi.com/?i=" + Movies.get(clickedItemIndex).getImdbID());
             }
         });
+        findViewById(R.id.buttonFinish).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent= new Intent(MovieDetailsActivity.this,SearchMovieActivity.class);
+                intent.putParcelableArrayListExtra("Movies",Movies);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     @Override
@@ -86,7 +105,23 @@ public class MovieDetailsActivity extends AppCompatActivity implements GetMovieD
         Movies.add(clickedItemIndex, movies);
 
         tvTitle.setText(Movies.get(clickedItemIndex).getTitle() + "(" + Movies.get(clickedItemIndex).getYear() + ")");
-        tvRelease.setText(getResources().getString(R.string.releaseDate) + Movies.get(clickedItemIndex).getReleased());
+
+        String dateStr =  Movies.get(clickedItemIndex).getReleased();
+        String formatedDate="";
+        DateFormat formatter = new SimpleDateFormat("dd MMM yyyy", Locale.US);
+        DateFormat writeFormat= new SimpleDateFormat("MMM dd yyyy");
+        Date date=null;
+        try {
+            date = (Date) formatter.parse(dateStr);
+            formatedDate=writeFormat.format(date);
+
+        }
+        catch (ParseException e){
+            e.printStackTrace();
+        }
+
+
+        tvRelease.setText(getResources().getString(R.string.releaseDate) + formatedDate);
         tvGenre.setText(getResources().getString(R.string.genre) + Movies.get(clickedItemIndex).getGenre());
         tvDirector.setText(getResources().getString(R.string.director) + Movies.get(clickedItemIndex).getDirector());
         tvActors.setText(getResources().getString(R.string.actors) + Movies.get(clickedItemIndex).getActors());
@@ -99,5 +134,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements GetMovieD
         else
             ratingBar.setRating(0);
 
+        new getThumbnail().execute(Movies.get(clickedItemIndex).getPoster());
     }
 }
