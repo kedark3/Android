@@ -43,12 +43,12 @@ public class SearchMovieActivity extends AppCompatActivity implements GetMovieLi
             progressDialog.setCancelable(false);
             progressDialog.setMessage("Loading Movie List");
             //paramList = new HashMap<String, ArrayList<String>>();
-             if(getIntent().getParcelableArrayListExtra("Movies")==null)
+             //if(getIntent().getParcelableArrayListExtra("Movies")==null)
                 new GetMovieListAsyncTask(this).execute("http://www.omdbapi.com/?type=movie&s=" + movieName);//,SearchMovieActivity.this.getLocalClassName());
-            else {
-                 moviesList=getIntent().getParcelableArrayListExtra("Movies");
-                 setupData(moviesList);
-             }
+            //else {
+            //     moviesList=getIntent().getParcelableArrayListExtra("Movies");
+              //   setupData(moviesList);
+             //}
             RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.relativeLayout);
             ScrollView scrollView = new ScrollView(this);
             scrollView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));

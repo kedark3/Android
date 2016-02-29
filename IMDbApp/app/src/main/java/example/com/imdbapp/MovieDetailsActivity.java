@@ -91,9 +91,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements GetMovieD
         findViewById(R.id.buttonFinish).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent= new Intent(MovieDetailsActivity.this,SearchMovieActivity.class);
-                intent.putParcelableArrayListExtra("Movies",Movies);
-                startActivity(intent);
                 finish();
             }
         });
