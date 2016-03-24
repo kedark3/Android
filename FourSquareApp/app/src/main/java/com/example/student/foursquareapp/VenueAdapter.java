@@ -4,6 +4,8 @@ package com.example.student.foursquareapp;
  * Created by student on 3/21/16.
  */
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,13 +21,15 @@ public class VenueAdapter extends ArrayAdapter<Venue> {
     List<Venue> mData;
     Context mContext;
     int mResourceId;
+    SharedPreferences preferences;
 
 
-    public VenueAdapter(Context context, int resource, List<Venue> objects) {
+    public VenueAdapter(Context context, int resource, List<Venue> objects, SharedPreferences preferences) {
         super(context, resource, objects);
         this.mContext = context;
         this.mData = objects;
         this.mResourceId = resource;
+        this.preferences=preferences;
     }
 
     @Override
@@ -54,8 +58,11 @@ public class VenueAdapter extends ArrayAdapter<Venue> {
         else if(Integer.parseInt(mData.get(position).checkInCount)>500)
             imageViewBadge.setImageDrawable(convertView.getResources().getDrawable(R.drawable.gold));
 
-        if(mData.get(position).isVisited())
+        Log.d("checkvisited",mData.get(position).isVisited()+"and***"+preferences.getString(mData.get(position).venueId,null));
+        if(mData.get(position).isVisited() || preferences.getString(mData.get(position).venueId,null)!=null ){
             imageViewMark.setImageDrawable(convertView.getResources().getDrawable(R.drawable.visited));
+
+        }
         else
             imageViewMark.setImageDrawable(convertView.getResources().getDrawable(R.drawable.unvisited));
 

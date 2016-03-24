@@ -14,6 +14,12 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+
+
+/**
+ * Created by Sairam on 3/23/2016.
+ */
 
 public class VenueActivity extends AppCompatActivity implements GetEventFeed.contextInterface{
 
@@ -31,9 +37,11 @@ public class VenueActivity extends AppCompatActivity implements GetEventFeed.con
         listView= (ListView) findViewById(R.id.listView);
 
         //Remember to customize Date
-
+        Calendar c= Calendar.getInstance();
         new GetEventFeed(this).execute("https://api.foursquare.com/v2/venues/search?client_id="+
-                CLIENT_ID+"&client_secret="+CLIENT_SECRET+"&v=20160321&near="+CITY+","+STATE);
+                CLIENT_ID+"&client_secret="+CLIENT_SECRET+"&v="+c.get(Calendar.YEAR)+"0"+
+                c.get(Calendar.MONTH)+c.get(Calendar.DAY_OF_MONTH)
+                +"&near="+CITY+","+STATE);
 
 
     }
@@ -56,9 +64,9 @@ public class VenueActivity extends AppCompatActivity implements GetEventFeed.con
 
 
 
-        final VenueAdapter adapter = new VenueAdapter(this, R.layout.row_item_layout, venueList);
+        final VenueAdapter adapter = new VenueAdapter(this, R.layout.row_item_layout, venueList,pref);
         listView.setAdapter(adapter);
-        adapter.setNotifyOnChange(true);
+
 
 
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -70,13 +78,15 @@ public class VenueActivity extends AppCompatActivity implements GetEventFeed.con
                     editor.commit();
                     Toast.makeText(VenueActivity.this, "Successfully Marked", Toast.LENGTH_SHORT).show();
                     venueList.get(position).setVisited(true);
-                    adapter.notifyDataSetChanged();
+                    listView.setAdapter(adapter);
+                    //adapter.notifyDataSetChanged();
                 }else {
                     editor.remove(venueList.get(position).getVenueId());
                     editor.commit();
                     Toast.makeText(VenueActivity.this, "Successfully Un-Marked", Toast.LENGTH_SHORT).show();
                     venueList.get(position).setVisited(false);
-                    adapter.notifyDataSetChanged();
+                    listView.setAdapter(adapter);
+                    // adapter.notifyDataSetChanged();
                 }
 
                 return false;
@@ -105,7 +115,7 @@ public class VenueActivity extends AppCompatActivity implements GetEventFeed.con
                     if(v.isVisited())
                         markedVenueList.add(v);
                 }
-                adapter = new VenueAdapter(this, R.layout.row_item_layout, markedVenueList);
+                adapter = new VenueAdapter(this, R.layout.row_item_layout, markedVenueList,pref);
                 listView.setAdapter(adapter);
 
                 return true;
@@ -114,9 +124,11 @@ public class VenueActivity extends AppCompatActivity implements GetEventFeed.con
                 for(Venue v: venueList){
                     if(pref.getString(v.getVenueId(),null)!=null)
                         editor.remove(v.getVenueId());
+
                     v.setVisited(false);
                 }
-                adapter = new VenueAdapter(this, R.layout.row_item_layout, venueList);
+                editor.commit();
+                adapter = new VenueAdapter(this, R.layout.row_item_layout, venueList,pref);
                 listView.setAdapter(adapter);
                 return true;
 
@@ -125,3 +137,4 @@ public class VenueActivity extends AppCompatActivity implements GetEventFeed.con
         }
     }
 }
+
