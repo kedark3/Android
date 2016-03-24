@@ -1,8 +1,12 @@
 package com.example.student.foursquareapp;
 
+import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -33,6 +37,27 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        GPSTracker gpsTracker = new GPSTracker(this);
+        if (gpsTracker.getIsGPSTrackingEnabled())
+        {
+            String stringLatitude = String.valueOf(gpsTracker.latitude);
+
+            String stringLongitude = String.valueOf(gpsTracker.longitude);
+            String countryName= gpsTracker.getCountryName(this);
+            String city= gpsTracker.getLocality(this);
+            String postalCode =gpsTracker.getPostalCode(this);
+            String addressLine = gpsTracker.getAddressLine(this);
+            Log.d("Location","Latitude:  " + stringLatitude + "Longitude:  " + stringLongitude);
+
+        }
+        else
+        {
+            // can't get location
+            // GPS or Network is not enabled
+            // Ask user to enable GPS/network in settings
+            gpsTracker.showSettingsAlert();
+        }
 
 
     }
