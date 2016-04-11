@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Capture Photo</title>
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" charset="utf-8">
+
+        function capturePhoto(){
+            navigator.camera.getPicture(onPhotoDataSuccess, onFail, {quality: 50,
+            destinationType: Camera.DestinationType.DATA_URL });
+        }
+        function onPhotoDataSuccess(imageData){
+            var smallImage = document.getElementById('smallImage');
+            smallImage.style.display = 'block';
+            smallImage.src = "data:image/jpeg;base64," + imageData;
+        }
+        function onFail(message){
+            alert('Failed because: ' + message);
+        }
+    </script>
+
+</head>
+<body>
+    <button onclick="capturePhoto();">Capture Photo</button><br>
+    <img style="display:none;width:60px;height:60px;" id="smallImage" src=""/>
+</body>
+</html>
