@@ -48,9 +48,10 @@ public class MainActivity extends AppCompatActivity {
                 myFirebaseRef.authWithPassword(etEmail.getText().toString(),etPassword.getText().toString(), new Firebase.AuthResultHandler() {
                     @Override
                     public void onAuthenticated(AuthData authData) {
-                        //Intent intent = new Intent(MainActivity.this, ExpensesListActivity.class);
-                        //startActivity(intent);
                         Toast.makeText(MainActivity.this, "Login success!", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(MainActivity.this, ConversationActivity.class);
+                        startActivity(intent);
+
                     }
 
                     @Override
