@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Stay in Touch</string>
+    <string name="email">Email</string>
+    <string name="login">Login</string>
+    <string name="createAccount">Create a New Account</string>
+    <string name="BtnSignUp">Sign Up</string>
+    <string name="BtnCancel">Cancel</string>
 </resources>
