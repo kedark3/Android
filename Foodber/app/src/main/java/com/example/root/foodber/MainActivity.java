@@ -5,12 +5,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
 
 public class MainActivity extends AppCompatActivity {
-
+    public static String URL_PATH="https://foodber.firebaseio.com/";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.buttonCreateNewAccount).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,SignUpActivity.class);
+                Intent intent = new Intent(MainActivity.this,Signup.class);
                 startActivity(intent);
             }
         });
@@ -40,13 +42,14 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                System.out.println(etEmail.getText().toString() + etPassword.getText().toString());
+
 
                 myFirebaseRef.authWithPassword(etEmail.getText().toString(),etPassword.getText().toString(), new Firebase.AuthResultHandler() {
                     @Override
                     public void onAuthenticated(AuthData authData) {
-                        Intent intent = new Intent(MainActivity.this, ExpensesListActivity.class);
-                        startActivity(intent);
+                        //Intent intent = new Intent(MainActivity.this, ExpensesListActivity.class);
+                        //startActivity(intent);
+                        Toast.makeText(MainActivity.this, "Login success!", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
