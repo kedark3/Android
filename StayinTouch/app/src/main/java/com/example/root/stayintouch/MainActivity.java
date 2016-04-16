@@ -13,7 +13,7 @@ import com.firebase.client.FirebaseError;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static String URL_PATH="https://stay-in-touch22.firebaseio.com/";
+    public static String URL_PATH="https://stay-in-touch22.firebaseio.com";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
