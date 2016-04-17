@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.content.Intent;
 
+import com.firebase.client.AuthData;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -32,8 +33,15 @@ public class ConversationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_conversation);
 
-        //Firebase.setAndroidContext(this);
+        Firebase.setAndroidContext(this);
         final Firebase myFirebaseRef = new Firebase(MainActivity.URL_PATH + "/users");
+
+        AuthData authData = myFirebaseRef.getAuth();
+
+        if (authData == null) {
+            finish();
+        }
+
         myFbRef=myFirebaseRef;
         contactsListView = (ListView) findViewById(R.id.listViewContacts);
         final UserListAdapter adapter = new UserListAdapter(this, R.layout.user_list_row, contactsList);
@@ -47,9 +55,10 @@ public class ConversationActivity extends AppCompatActivity {
                 contactsList.clear();
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                     User user = postSnapshot.getValue(User.class);
-                    if (!user.getEmail().equals(myFirebaseRef.getAuth().getProviderData().get("email"))) {
-                        contactsList.add(user);
-                    }
+                    if(myFirebaseRef.getAuth()!=null)
+                        if (!user.getEmail().equals(myFirebaseRef.getAuth().getProviderData().get("email"))) {
+                            contactsList.add(user);
+                        }
                 }
 
 
@@ -91,6 +100,7 @@ public class ConversationActivity extends AppCompatActivity {
             case R.id.edit_profile:
                 Intent intent = new Intent(ConversationActivity.this,EditProfileActivity.class);
                 startActivity(intent);
+                finish();
                 break;
             case R.id.logout:
                 myFbRef.unauth();
