@@ -25,7 +25,7 @@ public class Signup extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-        Firebase.setAndroidContext(this);
+        //Firebase.setAndroidContext(this);
 
         etEmail =(EditText)findViewById(R.id.editTextEmail);
         etPassword =(EditText)findViewById(R.id.editTextPassword);
@@ -58,7 +58,7 @@ public class Signup extends AppCompatActivity {
 
                             myFirebaseRef.child(etEmail.getText().toString().split("@")[0]).setValue(user);
 
-                            myFirebaseRef.authWithPassword(etEmail.getText().toString(), etPassword.getText().toString(), new Firebase.AuthResultHandler() {
+                            /*myFirebaseRef.authWithPassword(etEmail.getText().toString(), etPassword.getText().toString(), new Firebase.AuthResultHandler() {
                                 @Override
                                 public void onAuthenticated(AuthData authData) {
                                     Toast.makeText(Signup.this, "Sign up success!", Toast.LENGTH_SHORT).show();
@@ -72,7 +72,7 @@ public class Signup extends AppCompatActivity {
                                     Toast.makeText(Signup.this, firebaseError.getMessage(), Toast.LENGTH_LONG).show();
                                     ;
                                 }
-                            });
+                            });*/
                             finish();
 
                         }

@@ -5,4 +5,6 @@
     <string name="createAccount">Create a New Account</string>
     <string name="BtnSignUp">Sign Up</string>
     <string name="BtnCancel">Cancel</string>
+    <string name="btnUpdate">Update</string>
+    <string name="btnCancel">Cancel</string>
 </resources>

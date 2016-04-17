@@ -18,9 +18,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Signup" />
-        <activity android:name=".ConversationActivity" />
-        <activity android:name=".EditProfileActivity"></activity>
+        <activity android:name=".Signup" android:label="@string/BtnSignUp"/>
+        <activity android:name=".ConversationActivity" android:label="Conversations"/>
+        <activity android:name=".EditProfileActivity" android:label="EditProfile"></activity>
     </application>
 
 </manifest>

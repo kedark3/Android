@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
                         System.out.print("Authentication" + authData.getProviderData());
                         Intent intent = new Intent(MainActivity.this, ConversationActivity.class);
                         startActivity(intent);
+                        finish();
 
                     }
 

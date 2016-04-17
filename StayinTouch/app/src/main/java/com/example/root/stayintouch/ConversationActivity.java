@@ -32,7 +32,7 @@ public class ConversationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_conversation);
 
-        Firebase.setAndroidContext(this);
+        //Firebase.setAndroidContext(this);
         final Firebase myFirebaseRef = new Firebase(MainActivity.URL_PATH + "/users");
         myFbRef=myFirebaseRef;
         contactsListView = (ListView) findViewById(R.id.listViewContacts);
@@ -44,6 +44,7 @@ public class ConversationActivity extends AppCompatActivity {
         myFirebaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
+                contactsList.clear();
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                     User user = postSnapshot.getValue(User.class);
                     if (!user.getEmail().equals(myFirebaseRef.getAuth().getProviderData().get("email"))) {
