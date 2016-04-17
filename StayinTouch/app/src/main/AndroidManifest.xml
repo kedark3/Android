@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.root.stayintouch">
 
+    <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -18,7 +19,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".Signup" />
-        <activity android:name=".ConversationActivity"></activity>
+        <activity android:name=".ConversationActivity" />
+        <activity android:name=".EditProfileActivity"></activity>
     </application>
 
 </manifest>

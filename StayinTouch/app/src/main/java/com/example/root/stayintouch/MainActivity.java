@@ -34,8 +34,8 @@ public class MainActivity extends AppCompatActivity {
         AuthData authData = myFirebaseRef.getAuth();
 
         if (authData != null) {
-            //Intent intent = new Intent(MainActivity.this, ExpensesListActivity.class);
-            //startActivity(intent);
+            Intent intent = new Intent(MainActivity.this, ConversationActivity.class);
+            startActivity(intent);
         }
         findViewById(R.id.buttonLogin).setOnClickListener(new View.OnClickListener() {
             EditText etEmail= (EditText) findViewById(R.id.etEmail);
@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onAuthenticated(AuthData authData) {
                         Toast.makeText(MainActivity.this, "Login success!", Toast.LENGTH_SHORT).show();
+                        System.out.print("Authentication" + authData.getProviderData());
                         Intent intent = new Intent(MainActivity.this, ConversationActivity.class);
                         startActivity(intent);
 
