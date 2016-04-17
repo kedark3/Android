@@ -4,7 +4,7 @@ package com.example.root.stayintouch;
  * Created by root on 4/16/16.
  */
 public class User {
-    String email,password,name,phone,profilePic;
+    private String email,password,name,phone,profilePic;
 
 
     public User() {

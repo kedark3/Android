@@ -49,6 +49,8 @@ public class ConversationActivity extends AppCompatActivity {
         progressDialog.setMessage("Loading Contacts!");
         progressDialog.show();
         progressDialog.setCancelable(false);
+
+
         myFirebaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
@@ -72,19 +74,6 @@ public class ConversationActivity extends AppCompatActivity {
             }
         });
 
-        contactsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                System.out.println("Phone number" + myFirebaseRef + contactsList.get(position).getPhone());
-                Intent i = new Intent(android.content.Intent.ACTION_CALL, Uri.parse("tel:"+contactsList.get(position).getPhone()));
-                if (ActivityCompat.checkSelfPermission(ConversationActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-
-                    return;
-                }
-                startActivity(i);
-
-            }
-        });
     }
 
     @Override
