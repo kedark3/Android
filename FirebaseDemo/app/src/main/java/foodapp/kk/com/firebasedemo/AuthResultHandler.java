@@ -8,7 +8,7 @@ import com.firebase.client.FirebaseError;
  * Created by Sairam on 4/11/2016.
  */
 public class AuthResultHandler implements Firebase.AuthResultHandler {
-    private final String provider
+    private final String provider;
     public AuthResultHandler(String provider){
         this.provider =provider;
     }

@@ -41,6 +41,7 @@ public class ConversationActivity extends AppCompatActivity {
         if (authData == null) {
             finish();
         }
+        /*
 
         myFbRef=myFirebaseRef;
         contactsListView = (ListView) findViewById(R.id.listViewContacts);
@@ -72,7 +73,7 @@ public class ConversationActivity extends AppCompatActivity {
             public void onCancelled(FirebaseError firebaseError) {
                 System.out.println("The read failed: " + firebaseError.getMessage());
             }
-        });
+        });*/
 
     }
 
