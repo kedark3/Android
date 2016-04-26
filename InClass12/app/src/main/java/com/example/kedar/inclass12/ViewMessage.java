@@ -88,7 +88,7 @@ public class ViewMessage extends Fragment {
         messagesListView.setAdapter(adapter);
         adapter.setNotifyOnChange(true);
         messagesListView.smoothScrollToPosition(adapter.getCount());
-        messagesListView.setSelection(messagesListView.getCount() - 1);
+
 
 
         //To display messages in real time in the list
@@ -112,6 +112,7 @@ public class ViewMessage extends Fragment {
                         adapter.notifyDataSetChanged();
                     }
                 }
+                messagesListView.setSelection(messagesListView.getCount() - 1);
 
 
             }
