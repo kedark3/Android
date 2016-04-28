@@ -17,7 +17,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Signup"></activity>
+        <activity
+            android:name=".Signup"
+            android:label="@string/BtnSignUp" />
+        <activity
+            android:name=".Welcome"
+            android:label="@string/welcome" />
+        <activity
+            android:name=".Restaurants"
+            android:label="Restaurants" />
+        <activity android:name=".Menu"></activity>
     </application>
 
 </manifest>

@@ -13,6 +13,7 @@ import com.firebase.client.FirebaseError;
 
 public class MainActivity extends AppCompatActivity {
     public static String URL_PATH="https://foodber.firebaseio.com/";
+    public static Firebase myFirebaseRef;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
         Firebase.setAndroidContext(this);
 
-        final Firebase myFirebaseRef = new Firebase(URL_PATH);
+        myFirebaseRef = new Firebase(URL_PATH);
 
         findViewById(R.id.buttonCreateNewAccount).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -33,9 +34,13 @@ public class MainActivity extends AppCompatActivity {
         AuthData authData = myFirebaseRef.getAuth();
 
         if (authData != null) {
-            //Intent intent = new Intent(MainActivity.this, ExpensesListActivity.class);
-            //startActivity(intent);
+            Intent intent = new Intent(MainActivity.this, Welcome.class);
+            startActivity(intent);
         }
+
+
+
+
         findViewById(R.id.buttonLogin).setOnClickListener(new View.OnClickListener() {
             EditText etEmail= (EditText) findViewById(R.id.etEmail);
             EditText etPassword= (EditText) findViewById(R.id.etPassword);
@@ -47,8 +52,8 @@ public class MainActivity extends AppCompatActivity {
                 myFirebaseRef.authWithPassword(etEmail.getText().toString(),etPassword.getText().toString(), new Firebase.AuthResultHandler() {
                     @Override
                     public void onAuthenticated(AuthData authData) {
-                        //Intent intent = new Intent(MainActivity.this, ExpensesListActivity.class);
-                        //startActivity(intent);
+                        Intent intent = new Intent(MainActivity.this, Welcome.class);
+                        startActivity(intent);
                         Toast.makeText(MainActivity.this, "Login success!", Toast.LENGTH_SHORT).show();
                     }
 
