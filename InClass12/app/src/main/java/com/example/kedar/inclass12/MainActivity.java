@@ -21,8 +21,12 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity implements Login.OnFragmentInteractionListener {
-    public static String URL_PATH="https://stay-in-touch22.firebaseio.com";
+    public static String URL_PATH="https://stay-in-touch22.firebaseio.com/";
+    public static ArrayList<Conversations> conversationsList;
+    public static ArrayList<User> contactList;
     public static Firebase myFirebaseRef;
     private String[] navDrawerOptions = {"Contacts","Conversation","Archived","Settings","Log Out","Exit"};
     private DrawerLayout mDrawerLayout;
@@ -53,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements Login.OnFragmentI
             if (authData != null) {
                 setNavigationDrawer();
                 isCalled=true;
-                //Toast.makeText(MainActivity.this,"onResume is Called!",Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this,"onResume is Called!",Toast.LENGTH_LONG).show();
                 getFragmentManager().beginTransaction().replace(R.id.FragmentContainer,new Conversation()).commit();
             }
             else
@@ -125,6 +129,9 @@ public class MainActivity extends AppCompatActivity implements Login.OnFragmentI
                 break;
             case "Settings":
                 getFragmentManager().beginTransaction().replace(R.id.FragmentContainer,new EditProfile()).addToBackStack(null).commit();
+                break;
+            case "Conversation":
+                getFragmentManager().beginTransaction().replace(R.id.FragmentContainer,new Conversation()).commit();
                 break;
             case "Log Out": myFirebaseRef.unauth();
                     imageViewProfilePic.setImageBitmap(null);

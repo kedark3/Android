@@ -32,10 +32,8 @@ import java.util.Date;
  */
 public class ViewMessage extends Fragment {
 
-
     private static final String USER = "param1";
     private static final String USER2 = "param2";
-
 
     private User current_user,receiver;
     private ListView messagesListView;
@@ -102,17 +100,22 @@ public class ViewMessage extends Fragment {
                     Messages msg = messageSnapshot.getValue(Messages.class);
                     msg.setKey(messageSnapshot.getKey());
 
-                    if(msg.getReceiver().equals(current_user.getEmail())&&msg.getSender().equals(receiver.getEmail())) {
+                    if(msg.getReceiver().equals(current_user.getEmail())&& msg.getSender().equals(receiver.getEmail())) {
                         messagesList.add(msg);
+                       // Log.d("Demo",current_user.getEmail()+"---"+receiver.getEmail());
+                       // Log.d("Demo2",msg.getSender()+"---"+msg.getReceiver());
+                        MainActivity.myFirebaseRef.child("Messages").child(msg.getKey()).child("message_read").setValue("true");
                         adapter.notifyDataSetChanged();
                     }
                     //reverse Condition
                     if(msg.getReceiver().equals(receiver.getEmail())&&msg.getSender().equals(current_user.getEmail())) {
                         messagesList.add(msg);
+
                         adapter.notifyDataSetChanged();
                     }
                 }
                 messagesListView.setSelection(messagesListView.getCount() - 1);
+
 
 
             }
@@ -134,8 +137,36 @@ public class ViewMessage extends Fragment {
                         final String date = DateFormat.getDateTimeInstance().format(new Date());
                         Messages msg=new Messages(date,"false",etMessage.getText().toString(),receiver.getEmail(),current_user.getEmail());
                         etMessage.setText("");
-                        MainActivity.myFirebaseRef.child("Messages").push().setValue(msg);
+                        Firebase msgRef=MainActivity.myFirebaseRef.child("Messages").push();
+                        msgRef.setValue(msg);
+                        msgRef.child("message_read").setValue("false");
 
+
+                        if(MainActivity.conversationsList.isEmpty()){
+                            Conversations newConversation= new Conversations(current_user.getEmail(),receiver.getEmail(),"none","","");
+                            Firebase convRef=MainActivity.myFirebaseRef.child("Conversations").push();
+                            convRef.setValue(newConversation);
+                            convRef.child("isArchived_by_participant1").setValue("false");
+                            convRef.child("isArchived_by_participant2").setValue("false");
+                            newConversation.setConversationID(convRef.getKey());
+                            MainActivity.conversationsList.add(newConversation);
+
+                        }
+                        else
+                        for(Conversations c: MainActivity.conversationsList){
+
+                            if( (c.getParticipant1().equals(current_user.getEmail()))  &&
+                                    !(c.getParticipant2().equals(receiver.getEmail()))){
+                                Conversations newConversation= new Conversations(current_user.getEmail(),receiver.getEmail(),"none","","");
+                                Firebase convRef=MainActivity.myFirebaseRef.child("Conversations").push();
+                                convRef.setValue(newConversation);
+                                convRef.child("isArchived_by_participant1").setValue("false");
+                                convRef.child("isArchived_by_participant2").setValue("false");
+                                newConversation.setConversationID(convRef.getKey());
+                                MainActivity.conversationsList.add(newConversation);
+                                break;
+                            }
+                        }
                     }else
                         Toast.makeText(getActivity(), "Message box contains more than 140 Characters!", Toast.LENGTH_SHORT).show();
                 }else

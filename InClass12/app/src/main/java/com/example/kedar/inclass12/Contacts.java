@@ -40,7 +40,6 @@ public class Contacts extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private ArrayList<User> contactList;
     private int flaggedItem;
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -89,10 +88,10 @@ public class Contacts extends Fragment {
         View view=inflater.inflate(R.layout.fragment_contacts, container, false);
         ListView lvContacts = (ListView)view.findViewById(R.id.listViewContacts);
 
-        contactList=new ArrayList<>();
 
 
 
+        MainActivity.contactList=new ArrayList<>();
         //Firebase List adapter used**********************************
         FirebaseListAdapter<User> listAdapter=new FirebaseListAdapter<User>(
                 getActivity(),
@@ -127,7 +126,7 @@ public class Contacts extends Fragment {
                    view.setLayoutParams(new AbsListView.LayoutParams(-1,1));
                     setUserToRemove(i);
                 }
-                contactList.add(user);
+                MainActivity.contactList.add(user);
             }
 
         };
@@ -139,9 +138,9 @@ public class Contacts extends Fragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
-                for(User u: contactList)
+                for(User u: MainActivity.contactList)
                 {
-                    if(u.getName()==contactList.get(position).getName())
+                    if(u.getName()==MainActivity.contactList.get(position).getName())
                         getFragmentManager().beginTransaction().replace(R.id.FragmentContainer,ViewContact.newInstance(u,""))
                             .addToBackStack(null).commit();
                 }
@@ -155,7 +154,7 @@ public class Contacts extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 getFragmentManager().beginTransaction().replace(R.id.FragmentContainer,
-                        ViewMessage.newInstance(MainActivity.loggedInUser,contactList.get(position)))
+                        ViewMessage.newInstance(MainActivity.loggedInUser,MainActivity.contactList.get(position)))
                             .addToBackStack(null).commit();
 
 
