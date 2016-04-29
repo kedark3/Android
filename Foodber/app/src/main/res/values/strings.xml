@@ -6,7 +6,8 @@
     <string name="createAccount">Create a New Account</string>
     <string name="BtnSignUp">Sign Up</string>
     <string name="BtnCancel">Cancel</string>
-    <string name="btnPlaceOrder">I\'m Hungry!</string>
+    <string name="btnPlaceOrder">I\'m Hungry, Let me order Food!</string>
     <string name="btnSeeOrders">Feed Hungry, Deliver Food</string>
     <string name="gpsSwitch">I am available to accept orders</string>
+    <string name="btnNext">Review Order/View Cart</string>
 </resources>

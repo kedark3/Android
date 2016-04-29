@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Locate nearby!</string>
+    <string name="title_activity_maps_demo">Map</string>
+    <string name="alert_title">Select the Place type</string>
+    <string-array name="place_types">
+        <item>UNIVERSITY</item>
+        <item>Car Rental</item>
+        <item>Gas Station</item>
+        <item>Shopping Mall</item>
+        <item>Restaurant</item>
+    </string-array>
+
+</resources>
