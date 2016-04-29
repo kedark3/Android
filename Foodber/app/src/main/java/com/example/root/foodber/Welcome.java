@@ -3,6 +3,9 @@ package com.example.root.foodber;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -51,5 +54,27 @@ public class Welcome extends AppCompatActivity {
                 Toast.makeText(Welcome.this,"Wait for this feature to be enabled.",Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater=getMenuInflater();
+        inflater.inflate(R.menu.welcome_menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.logout:
+
+                MainActivity.myFirebaseRef.unauth();
+                Intent intent=new Intent(Welcome.this,MainActivity.class);
+                startActivity(intent);
+                finish();
+                break;
+
+        }
+        return true;
     }
 }

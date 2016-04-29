@@ -30,6 +30,7 @@
             android:name=".Menu"
             android:label="Buid your order" />
         <activity android:name=".ReviewOrder"></activity>
+
     </application>
 
 </manifest>

@@ -10,4 +10,7 @@
     <string name="btnSeeOrders">Feed Hungry, Deliver Food</string>
     <string name="gpsSwitch">I am available to accept orders</string>
     <string name="btnNext">Review Order/View Cart</string>
+    <string name="orderSummary">Order Summary</string>
+    <string name="totalCost">Total Cost:$</string>
+    <string name="btnPay">Make Payment</string>
 </resources>

@@ -2,6 +2,7 @@ package com.example.root.foodber;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 /**
  * Created by kedar on 4/28/2016.
@@ -9,6 +10,15 @@ import android.os.Parcelable;
 public class MenuItems implements Parcelable {
 
     private String itemName,description,cost;
+    private int quantity;
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 
     public MenuItems(String itemName, String description, String cost) {
         this.itemName = itemName;
@@ -20,6 +30,7 @@ public class MenuItems implements Parcelable {
         itemName=in.readString();
         description=in.readString();
         cost=in.readString();
+        quantity=in.readInt();
     }
 
     public MenuItems() {
@@ -48,6 +59,7 @@ public class MenuItems implements Parcelable {
         dest.writeString(itemName);
         dest.writeString(description);
         dest.writeString(cost);
+        dest.writeInt(quantity);
     }
 
     public String getItemName() {

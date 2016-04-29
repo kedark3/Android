@@ -49,12 +49,20 @@ public class OrderInterfaceAdapter extends ArrayAdapter<MenuItems> {
                 int qty= Integer.parseInt(tvQuantity.getText().toString());
                 if(qty<10){
                     qty++;
+                    if(!Menu.orderCart.contains(mData.get(position))){
+                        mData.get(position).setQuantity(1);
+                        Menu.orderCart.add(mData.get(position));
+                    }
+                    else {
+                        Menu.orderCart.remove(mData.get(position));
+                        mData.get(position).setQuantity(qty);
+                        Menu.orderCart.add(mData.get(position));
+                    }
                     Toast.makeText(mContext,mData.get(position).getItemName()+ " Added",Toast.LENGTH_SHORT).show();
                 }
                 else
                     Toast.makeText(mContext,"Cannot add more than 10 items!",Toast.LENGTH_SHORT).show();
-                Menu.orderCart.add(mData.get(position));
-                Log.d("Demo- Cart",Menu.orderCart.size()+Menu.orderCart.toString());
+
                 tvQuantity.setText(qty+"");
             }
         });
@@ -65,13 +73,20 @@ public class OrderInterfaceAdapter extends ArrayAdapter<MenuItems> {
                 int qty= Integer.parseInt(tvQuantity.getText().toString());
                 if(qty>0){
                     qty--;
+                    Menu.orderCart.remove(mData.get(position));
+                    mData.get(position).setQuantity(qty);
+                    if(qty>0)
+                        Menu.orderCart.add(mData.get(position));
                     Toast.makeText(mContext,mData.get(position).getItemName()+ " Removed",Toast.LENGTH_SHORT).show();
                 }
-                else
-                    Toast.makeText(mContext,"No items to remove!",Toast.LENGTH_SHORT).show();
-                Menu.orderCart.remove(mData.get(position));
+                else {
+                    Toast.makeText(mContext, "No items to remove!", Toast.LENGTH_SHORT).show();
+                    Menu.orderCart.remove(mData.get(position));
+                }
+
+
                 tvQuantity.setText(qty+"");
-                Log.d("Demo- Cart",Menu.orderCart.size()+Menu.orderCart.toString());
+
             }
         });
         return convertView;
