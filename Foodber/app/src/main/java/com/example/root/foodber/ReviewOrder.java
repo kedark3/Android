@@ -15,7 +15,9 @@ import com.braintreepayments.api.BraintreePaymentActivity;
 import com.braintreepayments.api.PaymentRequest;
 import com.braintreepayments.api.models.PaymentMethodNonce;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 public class ReviewOrder extends AppCompatActivity {
@@ -83,7 +85,15 @@ public class ReviewOrder extends AppCompatActivity {
                         BraintreePaymentActivity.EXTRA_PAYMENT_METHOD_NONCE
                 );
                 Toast.makeText(ReviewOrder.this,"Payment success,Order Placed!",Toast.LENGTH_LONG).show();
-                MainActivity.myFirebaseRef.child("Orders").push().setValue(orderList);
+                //MainActivity.myFirebaseRef.child("Orders").push().setValue(orderList);
+                String loggedInUserEmail=MainActivity.myFirebaseRef.getAuth().getProviderData().get("email").toString();
+
+
+                loggedInUserEmail = loggedInUserEmail.replace('.', ',');
+
+                final String date = DateFormat.getDateTimeInstance().format(new Date());
+                OrderClass orderObject=new OrderClass(loggedInUserEmail, ""+totalCost,"pending","none",date,"false",orderList);
+                MainActivity.myFirebaseRef.child("Orders").child(loggedInUserEmail+"").push().setValue(orderObject);
                 Intent intent=new Intent(ReviewOrder.this,Welcome.class);
                 startActivity(intent);
                 finish();
