@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class SeeOrders extends AppCompatActivity {
+public class SeeOrders extends AppCompatActivity implements SeeOrderAdapter.OrderModification {
 
     private ListView listViewOrder;
     private ArrayList<OrderClass> orders;
@@ -35,10 +35,14 @@ public class SeeOrders extends AppCompatActivity {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
                 for(DataSnapshot d: dataSnapshot.getChildren()) {
+
                     OrderClass orderClass= d.getValue(OrderClass.class);
-                    orderClass.setKey(d.getKey());
-                    Log.d("Demo-Key",orderClass.toString());
-                    orders.add(orderClass);
+                    if(orderClass.getStatus().equals("pending") &&
+                            orderClass.getAssignedTo().equals("none")) {
+                        Log.d("Demo-Key",orderClass.toString());
+                        orders.add(orderClass);
+                    }
+
                 }
                 adapter.notifyDataSetChanged();
             }
@@ -68,5 +72,13 @@ public class SeeOrders extends AppCompatActivity {
 
             }
         });
+
+    }
+
+    @Override
+    public void assignToUser(int position, OrderClass o) {
+
+        MainActivity.myFirebaseRef.child("Orders").child(o.getUser().replace(".",",")).child(o.getKey())
+                .child("assignedTo").setValue(MainActivity.myFirebaseRef.getAuth().getProviderData().get("email"));
     }
 }

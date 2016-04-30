@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.braintreepayments.api.BraintreePaymentActivity;
 import com.braintreepayments.api.PaymentRequest;
 import com.braintreepayments.api.models.PaymentMethodNonce;
+import com.firebase.client.Firebase;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -189,7 +190,9 @@ public class ReviewOrder extends AppCompatActivity {
                 OrderClass orderObject=new OrderClass(loggedInUserEmail, ""+totalCost,"pending","none",date,
                         "false",Welcome.lastKnownLatitude,Welcome.lastKnownLongitude,getIntent()
                         .getStringExtra("restaurantName"),orderList);
-                MainActivity.myFirebaseRef.child("Orders").child(loggedInUserEmail.replace('.', ',')+"").push().setValue(orderObject);
+                Firebase orderRef=MainActivity.myFirebaseRef.child("Orders").child(loggedInUserEmail.replace('.', ',')+"").push();
+                orderRef.setValue(orderObject);
+                orderRef.child("key").setValue(orderRef.getKey());
                 Intent intent=new Intent(ReviewOrder.this,Welcome.class);
                 startActivity(intent);
                 finish();

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.FirebaseError;
@@ -51,8 +52,10 @@ public class Menu extends AppCompatActivity {
         findViewById(R.id.buttonNext).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(orderCart.size()<1)
+                if(orderCart.size()<1) {
+                    Toast.makeText(Menu.this,"Cart Empty!",Toast.LENGTH_LONG).show();
                     return;
+                }
                 Intent intent= new Intent(Menu.this,ReviewOrder.class);
                 intent.putParcelableArrayListExtra("orderCart",orderCart);
                 intent.putExtra("restaurantName",getIntent().getStringExtra("restaurantName"));
