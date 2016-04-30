@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.root.foodber">
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -29,8 +30,8 @@
         <activity
             android:name=".Menu"
             android:label="Buid your order" />
-        <activity android:name=".ReviewOrder"></activity>
-
+        <activity android:name=".ReviewOrder" android:label="Review and Pay"/>
+        <activity android:name=".SeeOrders" android:label="Choose Orders to Deliver"></activity>
     </application>
 
 </manifest>

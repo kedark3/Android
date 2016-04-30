@@ -51,8 +51,11 @@ public class Menu extends AppCompatActivity {
         findViewById(R.id.buttonNext).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(orderCart.size()<1)
+                    return;
                 Intent intent= new Intent(Menu.this,ReviewOrder.class);
                 intent.putParcelableArrayListExtra("orderCart",orderCart);
+                intent.putExtra("restaurantName",getIntent().getStringExtra("restaurantName"));
                 startActivity(intent);
             }
         });

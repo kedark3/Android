@@ -3,16 +3,61 @@ package com.example.root.foodber;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.ArrayList;
 
 /**
  * Created by kedar on 4/29/2016.
  */
+
 public class OrderClass implements Parcelable{
 
-    private String user,key,cost,status,assignedTo,timestamp,paidToDeliverer;
+    private String user,key,cost,status,assignedTo,timestamp,paidToDeliverer,latitude,
+            longitude,restaurantName;
+
+    public String getRestaurantName() {
+        return restaurantName;
+    }
+
+    public void setRestaurantName(String restaurantName) {
+        this.restaurantName = restaurantName;
+    }
+
+    public OrderClass(String user, String key, String cost, String status,
+                      String assignedTo, String timestamp, String paidToDeliverer,
+                      String latitude, String longitude, String restaurantName,
+                      ArrayList<MenuItems> orderedItems) {
+        this.user = user;
+        this.key = key;
+        this.cost = cost;
+        this.status = status;
+        this.assignedTo = assignedTo;
+        this.timestamp = timestamp;
+        this.paidToDeliverer = paidToDeliverer;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.restaurantName = restaurantName;
+        this.orderedItems = orderedItems;
+    }
+
     private ArrayList<MenuItems> orderedItems;
 
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
 
     protected OrderClass(Parcel in) {
         user = in.readString();
@@ -22,7 +67,11 @@ public class OrderClass implements Parcelable{
         assignedTo = in.readString();
         timestamp = in.readString();
         paidToDeliverer = in.readString();
+        latitude=in.readString();
+        longitude=in.readString();
+        restaurantName=in.readString();
         orderedItems = in.createTypedArrayList(MenuItems.CREATOR);
+
     }
 
     public static final Creator<OrderClass> CREATOR = new Creator<OrderClass>() {
@@ -50,6 +99,9 @@ public class OrderClass implements Parcelable{
         dest.writeString(assignedTo);
         dest.writeString(timestamp);
         dest.writeString(paidToDeliverer);
+        dest.writeString(latitude);
+        dest.writeString(longitude);
+        dest.writeString(restaurantName);
         dest.writeTypedList(orderedItems);
     }
 
@@ -58,7 +110,7 @@ public class OrderClass implements Parcelable{
 
     public OrderClass(String user, String cost,
                       String status, String assignedTo, String timestamp,
-                      String paidToDeliverer, ArrayList<MenuItems> orderedItems) {
+                      String paidToDeliverer, String latitude,String longitude,String restaurantName,ArrayList<MenuItems> orderedItems) {
         this.user = user;
         this.cost = cost;
         this.status = status;
@@ -66,7 +118,11 @@ public class OrderClass implements Parcelable{
         this.timestamp = timestamp;
         this.paidToDeliverer = paidToDeliverer;
         this.orderedItems = orderedItems;
+        this.latitude=latitude;
+        this.longitude=longitude;
+        this.restaurantName=restaurantName;
     }
+
 
     @Override
     public String toString() {
@@ -78,6 +134,8 @@ public class OrderClass implements Parcelable{
                 ", assignedTo='" + assignedTo + '\'' +
                 ", timestamp='" + timestamp + '\'' +
                 ", paidToDeliverer='" + paidToDeliverer + '\'' +
+                ", latitude='" + latitude + '\'' +
+                ", longitude='" + longitude + '\'' +
                 ", orderedItems=" + orderedItems +
                 '}';
     }

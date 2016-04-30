@@ -1,21 +1,31 @@
 package com.example.root.foodber;
 
 import android.content.Intent;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class Welcome extends AppCompatActivity {
+    public static LocationManager locationManager;
+    public static LocationListener locationListener;
+    public static String lastKnownLatitude,lastKnownLongitude;
+    private TextView textViewWelcome;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
+
+        textViewWelcome=(TextView) findViewById(R.id.textViewWelcome);
+        textViewWelcome.setText("Welcome "+MainActivity.myFirebaseRef.getAuth().getProviderData().get("email")+",");
     /*****************************************************************************************************************
         //****adding restaurant's manually though code... did not explore other options since it was not required*********
         RestaurantObjects object=new RestaurantObjects("Starbucks","35.3069989","-80.7334355");
@@ -43,7 +53,8 @@ public class Welcome extends AppCompatActivity {
         findViewById(R.id.buttonSeeOrders).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(Welcome.this,"Wait for this feature to be enabled.",Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(Welcome.this, SeeOrders.class);
+                startActivity(intent);
             }
         });
 
